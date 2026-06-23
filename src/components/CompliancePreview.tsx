@@ -96,7 +96,7 @@ export const DecisionEngine = (function() {
       if (totalCritical > 0) {
         let criticalTasksCanDo = 0;
         
-        job.criticalTasks.forEach(task => {
+        job?.criticalTasks.forEach(task => {
           const capIds = task.capabilityIds || [];
           if (capIds.length === 0) {
             criticalTasksCanDo += 1;
@@ -772,7 +772,7 @@ export function CompliancePreview({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60 text-slate-300">
-                  {finalJob.criticalTasks.map((task: any, idx: number) => {
+                  {(finalJob?.criticalTasks || []).map((task: any, idx: number) => {
                     // Task Compatibility status resolution logic exactly as specified in the Batches 3 guidelines:
                     // ✓ = All capabilities "can"
                     // ◑ = At least one capability is "accom" and none is "cannot"
@@ -782,7 +782,7 @@ export function CompliancePreview({
                     let hasCannot = false;
 
                     capList.forEach((cid: string) => {
-                      const cVal = finalCandidate.capabilities[cid] || "can";
+                      const cVal = finalCandidate?.capabilities?.[cid] || "can";
                       if (cVal === "cannot") {
                         hasCannot = true;
                       } else if (cVal === "accom") {
@@ -818,7 +818,7 @@ export function CompliancePreview({
                         <td className="p-4">
                           <div className="flex flex-wrap gap-1.5 max-w-xs md:max-w-md">
                             {capList.map((cid: string) => {
-                              const cVal = finalCandidate.capabilities[cid] || "can";
+                              const cVal = finalCandidate?.capabilities?.[cid] || "can";
                               const cLabel = isAr ? {
                                 keyboard: "لوحة مفاتيح",
                                 mouse: "فأرة حاسوب",
@@ -925,7 +925,7 @@ export function CompliancePreview({
 
               {/* Budget cost items listing */}
               <div className="space-y-2.5">
-                {finalJob.accommodations.map((acc: any, index: number) => (
+                {(finalJob?.accommodations || []).map((acc: any, index: number) => (
                   <div key={acc.id || index} className="flex justify-between items-center bg-slate-950/50 p-3 rounded-xl border border-slate-900">
                     <div className="flex items-center gap-2.5">
                       <span className="w-6 h-6 rounded-lg bg-slate-900 border border-slate-800 text-[10px] font-mono font-bold text-slate-400 flex items-center justify-center">

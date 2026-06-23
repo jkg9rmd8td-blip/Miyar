@@ -229,7 +229,7 @@ export function DecisionGate({
 
   // Determine if a critical physical barrier exists
   const hasCriticalBarrier = useMemo(() => {
-    return (job.criticalTasks || []).some((task: any) => {
+    return (job?.criticalTasks || []).some((task: any) => {
       const capIds = task.capabilityIds || [];
       return capIds.some((cid: string) => (candidate?.capabilities?.[cid] || "can") === "cannot");
     });
@@ -262,13 +262,13 @@ export function DecisionGate({
     return "low";
   };
 
-  const consistencyConflicts = false; 
+  const consistencyConflicts = candidate?.requiresReview || false; 
   const antiGamingFlags = candidate?.isFluctuating || false;
   
   const legalRiskWithout = useMemo(() => computeLegalRisk(consistencyConflicts, antiGamingFlags, hasCriticalBarrier), [consistencyConflicts, antiGamingFlags, hasCriticalBarrier]);
   
   // With accommodations, we assume the critical barrier is mitigated
-  const legalRiskWith = useMemo(() => computeLegalRisk(consistencyConflicts, antiGamingFlags, false), [consistencyConflicts, antiGamingFlags]);
+  const legalRiskWith = useMemo(() => computeLegalRisk(consistencyConflicts, antiGamingFlags, hasCriticalBarrier), [consistencyConflicts, antiGamingFlags, hasCriticalBarrier]);
 
   // Overall Verdict Formula and Explanatory text logic
   const verdict = useMemo(() => {
@@ -396,7 +396,7 @@ export function DecisionGate({
     // Dynamic prompt setup
     const responseLanguage = isAr ? "Arabic" : "English";
     const barrierNames = envBarriers.map(b => b.name).join(", ");
-    const accNames = (job.accommodations || []).map((a: any) => `${a.name} (${a.cost} SAR)`).join(", ");
+    const accNames = (job?.accommodations || []).map((a: any) => `${a.name} (${a.cost} SAR)`).join(", ");
     const formattedCandidate = candidate?.name || (isAr ? "أحمد سالم الزهراني" : "Ahmed Salem Al-Zahrani");
     const formattedJobName = job?.title || (isAr ? "أخصائي علاقات عملاء مميز" : "Senior Customer Care Specialist");
     const formattedFacility = job?.facilityName || (isAr ? "الشركة السعودية لحلول الأعمال والاتصالات" : "Saudi Telecom Solutions");
@@ -420,7 +420,7 @@ export function DecisionGate({
           messages: [
             {
               role: "user",
-              content: `الرجاء توفير الشرح المهني للحالة الحالية بناءً على المعطيات التالية:\n\nاسم المرشح: ${formattedCandidate}\nالتصنيف الحركي: (${isAr ? "كرسي متحرك يدوي" : "Manual Wheelchair"})\nالوظيفة المقترحة: ${formattedJobName}\nالمنشأة: ${formattedFacility}\nالمظهر العام للوفاق: ${verdict.badge}\nالحواجز البيئية غير الممتثلة المكتشفة: ${barrierNames}\nالتكييفات المقترحة: ${accNames}\nكلفة التهيئة الإجمالية: ${job.totalAccomCost != null ? job.totalAccomCost : "غير محسوبة بعد"} ريال سعودي.`
+              content: `الرجاء توفير الشرح المهني للحالة الحالية بناءً على المعطيات التالية:\n\nاسم المرشح: ${formattedCandidate}\nالتصنيف الحركي: (${isAr ? "كرسي متحرك يدوي" : "Manual Wheelchair"})\nالوظيفة المقترحة: ${formattedJobName}\nالمنشأة: ${formattedFacility}\nالمظهر العام للوفاق: ${verdict.badge}\nالحواجز البيئية غير الممتثلة المكتشفة: ${barrierNames}\nالتكييفات المقترحة: ${accNames}\nكلفة التهيئة الإجمالية: ${job?.totalAccomCost != null ? job.totalAccomCost : "غير محسوبة بعد"} ريال سعودي.`
             }
           ]
         })
@@ -458,7 +458,7 @@ export function DecisionGate({
       compliance: { tasks: 22, env: 15, evidence: 38, accommodation: 15, financial: 10 },
       hybrid: { tasks: 30, env: 20, evidence: 20, accommodation: 15, financial: 15 }
     };
-    const sc = (job.scenario || "compliance") as keyof typeof weightsMap;
+    const sc = (job?.scenario || "compliance") as keyof typeof weightsMap;
     return weightsMap[sc] || weightsMap.compliance;
   }, [job]);
 
@@ -698,7 +698,7 @@ export function DecisionGate({
 
               <div className="text-left md:text-right">
                 <span className="font-mono font-bold text-emerald-400 block">
-                  {job.totalAccomCost != null
+                  {job?.totalAccomCost != null
                     ? `${job.totalAccomCost.toLocaleString()} ${isAr ? "ريال" : "SAR"}`
                     : (isAr ? "تكلفة التكييف غير محسوبة بعد" : "Accommodation cost not yet computed")}
                 </span>
@@ -813,7 +813,7 @@ export function DecisionGate({
                 </tr>
               </thead>
               <tbody className="divide-y divide-amber-500/10 text-slate-300">
-                {(job.accommodations || []).map((acc: any, idx: number) => {
+                {(job?.accommodations || []).map((acc: any, idx: number) => {
                   let mappedFunder = isAr ? "تحت تصنيف صندوق هدف (50%)" : "HRDF Co-funded (50%)";
                   const nameLower = (acc.name || "").toLowerCase();
                   if (nameLower.includes("مكتب") || nameLower.includes("desk") || nameLower.includes("مستشعر") || nameLower.includes("sensor")) {
@@ -840,7 +840,7 @@ export function DecisionGate({
                     {isAr ? "إجمالي كلفة التهيئة المطابقة:" : "Total Compliant Adaptation Cost:"}
                   </td>
                   <td className="p-3 text-left font-mono text-gold text-sm whitespace-nowrap">
-                    {job.totalAccomCost != null
+                    {job?.totalAccomCost != null
                       ? `${job.totalAccomCost.toLocaleString()} ${isAr ? "ريال سعودي" : "SAR"}`
                       : (isAr ? "غير محسوبة بعد" : "Not yet computed")}
                   </td>
