@@ -534,7 +534,7 @@ export default function App() {
             </div>
 
             <div className="pt-4 border-t border-slate-800/60 flex justify-between items-center text-[10px] text-slate-500">
-              <span className="font-mono text-[9px] uppercase tracking-wider">Miyar SBC-102 v1.1</span>
+              <span className="font-mono text-[9px] uppercase tracking-wider">Miyar SBC-201 v1.1</span>
               <button
                 type="button"
                 onClick={() => {

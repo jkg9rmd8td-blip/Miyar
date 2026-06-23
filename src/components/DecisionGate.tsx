@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import { AuditChain } from "../utils/AuditChain";
+import { safeSessionStorage } from "../utils/storage";
 
 interface DecisionGateProps {
   language: "ar" | "en";
@@ -187,7 +188,7 @@ export function DecisionGate({
 
   // Claude BYOK states
   const [apiKey, setApiKey] = useState(() => {
-    return sessionStorage.getItem("claude_api_key") || "";
+    return safeSessionStorage.getItem("claude_api_key") || "";
   });
   const [showApiKey, setShowApiKey] = useState(false);
   const [isAiLoading, setIsAiLoading] = useState(false);
@@ -378,7 +379,7 @@ export function DecisionGate({
   const handleApiKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const key = e.target.value;
     setApiKey(key);
-    sessionStorage.setItem("claude_api_key", key);
+    safeSessionStorage.setItem("claude_api_key", key);
   };
 
   // Perform fetching to Anthropic Claude models client-side with proper direct-browser override header
@@ -414,12 +415,12 @@ export function DecisionGate({
           max_tokens: 500,
           temperature: 0.2,
           system: language === "ar" 
-            ? "أنت مستشار توظيف متقدم مستقل ومحترف في المملكة العربية السعودية ومتخصص في الامتثال المهني وتعميق ملاءمة بيئة العمل للأشخاص ذوي الإعاقة حركياً وفق كود البناء السعودي SBC-102. مهمتك الأساسية تقديم شرح فني متكامل ومهني للتوصية الاستشارية الحالية للمرشح والمنشأة. يجب أن يتضمن الشرح: التوصية، وتحليل الحاجز الأهم في بيئة العمل، والخطوة العملية الأولى الملموسة والواضحة للبدء الفوري. التزم بالقواعد الصارمة التالية: 1. لا تذكر أية أرقام أو درجات نسبية أو نتائج خام إطلاقاً في كلامك. 2. اكتب بأسلوب لغوي رصين وبليغ وخالٍ من الحشو وجاذب للمسؤولين. 3. حجم الرد الاجمالي يجب ألا يتجاوز 180 كلمة ويكون باللغة العربية حصراً."
-            : "You are an advanced KSA recruitment and accessibility compliance consultant specializing in professional workspace placement for individuals with motor disabilities in accordance with SBC-102 codes. Your main duty is to provide a highly refined, professional explanation of the placement verdict. You must summarize the decision context, pinpoint the single most critical structural barrier, and outline the immediate concrete first step. Strict guidelines: 1. Do NOT mention any raw percentages, numbers, or scores. 2. Write in a sophisticated, authoritative, and concise tone. 3. The entire response must be strictly 180 words or less and written entirely in English.",
+            ? "أنت مستشار توظيف متقدم مستقل ومحترف في المملكة العربية السعودية ومتخصص في الامتثال المهني وتعميق ملاءمة بيئة العمل للأشخاص ذوي الإعاقة حركياً وفق كود البناء السعودي SBC-201. مهمتك الأساسية تقديم شرح فني متكامل ومهني للتوصية الاستشارية الحالية للمرشح والمنشأة. يجب أن يتضمن الشرح: التوصية، وتحليل الحاجز الأهم في بيئة العمل، والخطوة العملية الأولى الملموسة والواضحة للبدء الفوري. التزم بالقواعد الصارمة التالية: 1. لا تذكر أية أرقام أو درجات نسبية أو نتائج خام إطلاقاً في كلامك. 2. اكتب بأسلوب لغوي رصين وبليغ وخالٍ من الحشو وجاذب للمسؤولين. 3. حجم الرد الاجمالي يجب ألا يتجاوز 180 كلمة ويكون باللغة العربية حصراً."
+            : "You are an advanced KSA recruitment and accessibility compliance consultant specializing in professional workspace placement for individuals with motor disabilities in accordance with SBC-201 codes. Your main duty is to provide a highly refined, professional explanation of the placement verdict. You must summarize the decision context, pinpoint the single most critical structural barrier, and outline the immediate concrete first step. Strict guidelines: 1. Do NOT mention any raw percentages, numbers, or scores. 2. Write in a sophisticated, authoritative, and concise tone. 3. The entire response must be strictly 180 words or less and written entirely in English.",
           messages: [
             {
               role: "user",
-              content: `الرجاء توفير الشرح المهني للحالة الحالية بناءً على المعطيات التالية:\n\nاسم المرشح: ${formattedCandidate}\nالتصنيف الحركي: (${isAr ? "كرسي متحرك يدوي" : "Manual Wheelchair"})\nالوظيفة المقترحة: ${formattedJobName}\nالمنشأة: ${formattedFacility}\nالمظهر العام للوفاق: ${verdict.badge}\nالحواجز البيئية غير الممتثلة المكتشفة: ${barrierNames}\nالتكييفات المقترحة: ${accNames}\nكلفة التهيئة الإجمالية: ${job.totalAccomCost || 34700} ريال سعودي.`
+              content: `الرجاء توفير الشرح المهني للحالة الحالية بناءً على المعطيات التالية:\n\nاسم المرشح: ${formattedCandidate}\nالتصنيف الحركي: (${isAr ? "كرسي متحرك يدوي" : "Manual Wheelchair"})\nالوظيفة المقترحة: ${formattedJobName}\nالمنشأة: ${formattedFacility}\nالمظهر العام للوفاق: ${verdict.badge}\nالحواجز البيئية غير الممتثلة المكتشفة: ${barrierNames}\nالتكييفات المقترحة: ${accNames}\nكلفة التهيئة الإجمالية: ${job.totalAccomCost != null ? job.totalAccomCost : "غير محسوبة بعد"} ريال سعودي.`
             }
           ]
         })
@@ -508,7 +509,7 @@ export function DecisionGate({
           </h1>
           <p className="text-xs md:text-sm text-slate-400">
             {isAr 
-              ? "مخرجات القرار النهائي، وتوقع الميزانيات التخطيطية، والمطابقة الدقيقة للمعايير طبقا لكود البناء السعودي SBC-102" 
+              ? "مخرجات القرار النهائي، وتوقع الميزانيات التخطيطية، والمطابقة الدقيقة للمعايير طبقا لكود البناء السعودي SBC-201" 
               : "Final decision metrics, budgetary projection matrices, and direct Saudi Building Code compliance records"}
           </p>
         </div>
@@ -680,7 +681,7 @@ export function DecisionGate({
                 {isAr ? "مسار المواءمة المعتمد (مع التكييفات المقترحة)" : "Standard Miyar Route (With Accommodations)"}
               </span>
               <span className="text-[10px] font-bold text-emerald-400/80 bg-emerald-500/5 px-2 py-0.5 rounded border border-emerald-500/20">
-                {isAr ? "امتثال كودي كامل" : "SBC-102 Certified"}
+                {isAr ? "امتثال كودي كامل" : "SBC-201 Certified"}
               </span>
             </div>
 
@@ -825,7 +826,7 @@ export function DecisionGate({
                     <tr key={acc.id || idx} className="hover:bg-amber-500/5 transition">
                       <td className="p-3 font-bold text-slate-100">{acc.name}</td>
                       <td className="p-3 text-center text-[10px] text-slate-400 font-medium">{mappedFunder}</td>
-                      <td className="p-3 text-center font-mono text-[10px] text-indigo-400">SBC-102-OK</td>
+                      <td className="p-3 text-center font-mono text-[10px] text-indigo-400">SBC-201-OK</td>
                       <td className="p-3 text-left font-mono font-black text-amber-300">
                         {(acc.cost || 0).toLocaleString()} {isAr ? "ريال" : "SAR"}
                       </td>
@@ -839,7 +840,9 @@ export function DecisionGate({
                     {isAr ? "إجمالي كلفة التهيئة المطابقة:" : "Total Compliant Adaptation Cost:"}
                   </td>
                   <td className="p-3 text-left font-mono text-gold text-sm whitespace-nowrap">
-                    {(job.totalAccomCost || 34700).toLocaleString()} {isAr ? "ريال سعودي" : "SAR"}
+                    {job.totalAccomCost != null
+                      ? `${job.totalAccomCost.toLocaleString()} ${isAr ? "ريال سعودي" : "SAR"}`
+                      : (isAr ? "غير محسوبة بعد" : "Not yet computed")}
                   </td>
                 </tr>
               </tfoot>
@@ -901,7 +904,7 @@ export function DecisionGate({
               <button
                 onClick={() => {
                   setApiKey("");
-                  sessionStorage.removeItem("claude_api_key");
+                  safeSessionStorage.removeItem("claude_api_key");
                 }}
                 className="absolute inset-y-0 left-10 px-2 flex items-center text-rose-500 hover:text-rose-400 font-extrabold text-[10px] transition cursor-pointer"
                 title={isAr ? "مسح المفتاح المخزن" : "Clear saved credentials"}
@@ -1024,7 +1027,7 @@ export function DecisionGate({
                   {isAr ? "أقر أنا صاحب العمل بالاطلاع التام على التقرير" : "I understand and confirm full review of the advisory report"}
                 </span>
                 <span className="text-[10px] text-slate-500 block">
-                  {isAr ? "تسجيل الطابع الزمني والهندسي آلياً فور الاختيار" : "Logs instant cryptological and SBC-102 date timestamp when checked"}
+                  {isAr ? "تسجيل الطابع الزمني والهندسي آلياً فور الاختيار" : "Logs instant cryptological and SBC-201 date timestamp when checked"}
                 </span>
               </div>
             </label>
@@ -1232,7 +1235,7 @@ export function DecisionGate({
       <div className="hidden print:block border-t border-slate-300 pt-5 mt-10 text-right text-[9px] text-slate-600 font-mono">
         <div className="flex justify-between items-center">
           <div>
-            <span>SBC-102 MILITARY-GRADE AUDIT CHAIN STATUS: </span>
+            <span>SBC-201 AUDIT CHAIN STATUS: </span>
             <span className="font-extrabold text-black uppercase">VALID & SECURE (SHA-256)</span>
           </div>
           <div>

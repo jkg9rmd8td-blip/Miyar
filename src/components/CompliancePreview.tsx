@@ -349,7 +349,7 @@ export function CompliancePreview({
     scenarioLabel: isAr ? "سيناريو الملاءمة والوزن:" : "Weighting Scenario Context:",
     sbcZone: isAr ? "منطقة الامتثال الكودي:" : "SBC Code Zone Compliance:",
     wheelchairLabel: isAr ? "كرسي متحرك يدوي (دفع ذاتي متمكن)" : "Manual Wheelchair (Active self-propelling)",
-    semiGov: isAr ? "شبه حكومي - ممتثل كود SBC-102" : "Semi-Governmental (SBC-102 Compliant)",
+    semiGov: isAr ? "شبه حكومي - ممتثل كود SBC-201" : "Semi-Governmental (SBC-201 Compliant)",
     radarTitle: isAr ? "الرادار التحليلي للأبعاد الخمسة للقرار" : "Decision Analytics 5-Axis Radar Chart",
     scoresHeader: isAr ? "مؤشرات المطابقة والامتثال الكودي" : "Dimension Scoring & Weight Alignments",
     viewAsTableBtn: isAr ? "تبديل المخطط كجدول نصي" : "Toggle Chart as Data Table",
@@ -433,7 +433,7 @@ export function CompliancePreview({
         <div className="space-y-2">
           <div className="inline-flex items-center gap-2 bg-indigo-500/10 px-3 py-1 rounded-full text-indigo-400 text-xs font-black">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Miyar SBC-102 Dimension Engine v1.5</span>
+            <span>Miyar SBC-201 Dimension Engine v1.5</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-black text-white leading-tight">
             {text.title}
@@ -486,7 +486,7 @@ export function CompliancePreview({
                     </div>
                   </div>
                   <span className="text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-md border border-emerald-500/20">
-                    SBC-102 OK
+                    SBC-201 OK
                   </span>
                 </div>
 

@@ -102,8 +102,12 @@ export const AuditChain = (() => {
 
     clearChain(): void {
       chain = [];
-      if (typeof window !== "undefined") {
-        window.sessionStorage.removeItem("miyar_audit_chain");
+      try {
+        if (typeof window !== "undefined") {
+          window.sessionStorage.removeItem("miyar_audit_chain");
+        }
+      } catch (e) {
+        console.error(e);
       }
     }
   };

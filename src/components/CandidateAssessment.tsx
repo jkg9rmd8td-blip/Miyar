@@ -423,18 +423,18 @@ export function CandidateAssessment({ language, onComplete, onCancel }: Candidat
 
   // Step 3 State - Evidence
   const [uploadedFile, setUploadedFile] = useState<{ name: string; size: string } | null>(() => {
-    const cachedName = sessionStorage.getItem("ev_file_name");
-    const cachedSize = sessionStorage.getItem("ev_file_size");
+    const cachedName = safeSessionStorage.getItem("ev_file_name");
+    const cachedSize = safeSessionStorage.getItem("ev_file_size");
     return cachedName ? { name: cachedName, size: cachedSize || "" } : null;
   });
   const [docStrength, setDocStrength] = useState<string>(() => {
-    return sessionStorage.getItem("ev_doc_strength") || "medium";
+    return safeSessionStorage.getItem("ev_doc_strength") || "medium";
   });
   const [hasGaitAnalysis, setHasGaitAnalysis] = useState(() => {
-    return sessionStorage.getItem("ev_gait_done") === "true";
+    return safeSessionStorage.getItem("ev_gait_done") === "true";
   });
   const [gaitMetrics, setGaitMetrics] = useState(() => {
-    const cached = sessionStorage.getItem("ev_gait_metrics");
+    const cached = safeSessionStorage.getItem("ev_gait_metrics");
     if (cached) return JSON.parse(cached);
     return {
       speed: 1.3,
