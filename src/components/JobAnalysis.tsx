@@ -1920,6 +1920,7 @@ export function ThreeDMap({
     const script = document.createElement("script");
     script.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
     script.async = true;
+    script.crossOrigin = "anonymous";
     script.onload = () => {
       if ((window as any).THREE) {
         setThreeLoaded(true);

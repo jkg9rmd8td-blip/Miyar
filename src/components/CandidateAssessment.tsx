@@ -376,7 +376,7 @@ export function CandidateAssessment({ language, onComplete, onCancel }: Candidat
   // 15 Capabilities State
   const [capabilities, setCapabilities] = useState<Record<string, string>>(() => {
     const cached = safeSessionStorage.getItem("cand_capabilities");
-    if (cached) return JSON.parse(cached);
+    if (cached) { try { return JSON.parse(cached); } catch(e) {} }
     // default everyone can perform
     const initial: Record<string, string> = {};
     CapList.ar.forEach(c => {
@@ -387,7 +387,7 @@ export function CandidateAssessment({ language, onComplete, onCancel }: Candidat
 
   const [capabilitiesGoodDay, setCapabilitiesGoodDay] = useState<Record<string, string>>(() => {
     const cached = safeSessionStorage.getItem("cand_capabilities_good");
-    if (cached) return JSON.parse(cached);
+    if (cached) { try { return JSON.parse(cached); } catch(e) {} }
     const initial: Record<string, string> = {};
     CapList.ar.forEach(c => {
       initial[c.id] = "can";
@@ -397,7 +397,7 @@ export function CandidateAssessment({ language, onComplete, onCancel }: Candidat
 
   const [capabilitiesBadDay, setCapabilitiesBadDay] = useState<Record<string, string>>(() => {
     const cached = safeSessionStorage.getItem("cand_capabilities_bad");
-    if (cached) return JSON.parse(cached);
+    if (cached) { try { return JSON.parse(cached); } catch(e) {} }
     const initial: Record<string, string> = {};
     CapList.ar.forEach(c => {
       initial[c.id] = "can";
@@ -408,7 +408,7 @@ export function CandidateAssessment({ language, onComplete, onCancel }: Candidat
   // Step 2 State - Environment (8 landmarks)
   const [envData, setEnvData] = useState<Record<string, string>>(() => {
     const cached = safeSessionStorage.getItem("cand_env_data");
-    if (cached) return JSON.parse(cached);
+    if (cached) { try { return JSON.parse(cached); } catch(e) {} }
     return {
       entrance: "compliant",
       parking: "compliant",
@@ -435,7 +435,7 @@ export function CandidateAssessment({ language, onComplete, onCancel }: Candidat
   });
   const [gaitMetrics, setGaitMetrics] = useState(() => {
     const cached = safeSessionStorage.getItem("ev_gait_metrics");
-    if (cached) return JSON.parse(cached);
+    if (cached) { try { return JSON.parse(cached); } catch(e) {} }
     return {
       speed: 1.3,
       cadence: 112,
