@@ -96,7 +96,7 @@ export const DecisionEngine = (function() {
       if (totalCritical > 0) {
         let criticalTasksCanDo = 0;
         
-        job?.criticalTasks.forEach(task => {
+        (job?.criticalTasks || []).forEach(task => {
           const capIds = task.capabilityIds || [];
           if (capIds.length === 0) {
             criticalTasksCanDo += 1;

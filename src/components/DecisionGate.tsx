@@ -262,7 +262,7 @@ export function DecisionGate({
     return "low";
   };
 
-  const consistencyConflicts = candidate?.requiresReview || false; 
+  const consistencyConflicts = candidate?.requiresReview || false;
   const antiGamingFlags = candidate?.isFluctuating || false;
   
   const legalRiskWithout = useMemo(() => computeLegalRisk(consistencyConflicts, antiGamingFlags, hasCriticalBarrier), [consistencyConflicts, antiGamingFlags, hasCriticalBarrier]);
