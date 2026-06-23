@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --bg: #0D1520;
+  --surface: #141F30;
+  --elevated: #1B2B42;
+  --border: #243450;
+  --primary: #2F6FEB;
+  --primary-h: #4B87F5;
+  --text: #EDF2F7;
+  --muted: #8FA8C2;
+  --success: #4ADE80;
+  --success-bg: #052E16;
+  --partial: #FBBF24;
+  --partial-bg: #431407;
+  --barrier: #F87171;
+  --barrier-bg: #450A0A;
+  --gold: #D4A853;
+  --motor: #06B6D4;
+
+  font-family: 'Cairo', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@theme {
+  --font-sans: 'Cairo', 'Inter', "SF Pro Display", -apple-system, sans-serif;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-h: var(--primary-h);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-partial: var(--partial);
+  --color-partial-bg: var(--partial-bg);
+  --color-barrier: var(--barrier);
+  --color-barrier-bg: var(--barrier-bg);
+  --color-gold: var(--gold);
+  --color-motor: var(--motor);
+}
+
+/* Base custom styles to ensure consistent design and smooth cubic-bezier transitions */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Apply focus outline design universally for keyboard navigation to satisfy accessibility requirements */
+:focus-visible {
+  outline: 3px solid var(--primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* Support for apple design philosophy card-effects, frosted-glass effects and smooth animations */
+.glass-nav {
+  background: rgba(20, 31, 48, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(36, 52, 80, 0.5);
+}
+
+.glass-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(47, 111, 235, 0.4);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Custom animation timings using the requested cubic-bezier curve */
+.transition-luxury {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-duration: 350ms;
+}
+
+/* Accessibility constraints: disable all animations if the user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-delay: 0s !important;
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+    transform: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+/* Utility to completely avoid horizontal scroll in ultra-scaled or small viewports */
+.no-x-scroll {
+  max-width: 100vw;
+  overflow-x: hidden;
+}

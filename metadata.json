@@ -1,0 +1,6 @@
+{
+  "name": "معيار (Miyar)",
+  "description": "منصة دعم قرار التوظيف للأشخاص ذوي الإعاقة الحركية في المملكة العربية السعودية · الإصدار الأول",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
